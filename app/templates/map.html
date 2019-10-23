@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>NabeFinder - Find the Best Neighborhood for People with Disabilities</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+
+    <link rel="stylesheet" href="../../static/css/app.css">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../static/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../static/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../static/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="../../static/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="../../static/img/favicon.ico">
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/starter-template.css" rel="stylesheet">
+    <!--Slider CSS-->
+    <link href="../../static/css/slider.css" rel="stylesheet">
+    <!--Leaflet Search Styles-->
+    <link rel="stylesheet" href="../../static/css/leaflet-search.css"/>
+
+ 
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+            <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+          </div>
+          <a class="navbar-brand" href="#">NabeFinder</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/" data-toggle="collapse" data-target=".navbar-collapse.in" id="home-btn"><i class="fa fa-home white"></i>&nbsp;&nbsp;Home</a></li>
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+            <li class="dropdown">
+              <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn"><i class="fa fa-arrows-alt"></i>&nbsp;&nbsp;Zoom To Full Extent</a></li> 
+              </ul>
+            </li>
+            <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;Preferences and Filters</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="container">
+      <!--Sidebar-->
+      <div id="sidebar" style="display: none;">  <!--hide the sidebar by default-->
+        <div class="sidebar-wrapper" style="overflow-y:scroll;">
+          <div class="panel panel-default" id="features">
+            
+            <div class="panel-heading">
+              <h3 class="panel-title">Preferences and Filters
+              <button type="button" class="btn btn-xs btn-default pull-right" id="sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            
+            <div class="panel-body">
+              <!--Search box and sort-->
+              <div class="row">                                
+                <div class="col-xs-12 col-md-12" align="center">
+                  <button type="button" class="btn btn-default" id="usecase1" name="usecase1">Use Case 1</button>
+
+                  <button type="button" class="btn btn-default" id="usecase2" name="usecase2">Use Case 2</button></br>
+                  <hr class="small">
+                </div>
+
+
+                <div class="row text-center">
+                  <h4><b>Preferences</b></h4>
+                </div>
+
+                <div class="col-xs-12 col-md-12" align="left">
+
+
+                  <!--<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rincome" name="rincome" style="width:50px" >&nbsp;&nbsp;&nbsp;&nbsp;<b>Income</b>
+                  <br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rmhv" name="rmhv" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>Median House Value</b>
+                  <br>
+                -->
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="remploy" name="remploy" style="width:50px;">&nbsp;&nbsp;&nbsp;&nbsp;<b>Affordability</b>
+                  <br>
+                  
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rhealth" name="rhealth" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>Health</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="raccess" name="raccess" style="width:50px;">&nbsp;&nbsp;&nbsp;&nbsp;<b>Accessibility</b>
+                  <br>
+
+                  <h5><b>Accessibility to</b></h5>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rdisable" name="rdisable" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:100%">-Care for the Disabled</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rhospital" name="rhospital" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Hospitals</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rdoctor" name="rdoctor" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Doctors</b><br>
+                  
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rpharm" name="rpharm" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Pharmacies</b><br>
+                  
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rcomctr" name="rcomctr" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:100%">-Community Centers</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rbus" name="rbus" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Bus Stations</b><br>
+                  
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rsubway" name="rsubway" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Subway Stations</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rrestaurant" name="rrestaurant" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Restaurants</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rgrocery" name="rgrocery" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Grocery Stores</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rnature" name="rnature" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Natural Features</b><br>
+
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rpark" name="rpark" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Parks</b><br>
+                  
+                  <input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rzoo" name="rzoo" style="width:50px">&nbsp;&nbsp;&nbsp;&nbsp;<b>-Zoo</b><br>
+                  <hr class="small">
+                </div>
+
+                <div class="row text-center">
+                  <h4><b>Filters</b></h4>
+                </div>
+
+                <div class="col-xs-12 col-md-12">
+                  <b>Neighborhood Score:</b> <br>
+                  0&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,100]" id="sl1" style="width:150px">&nbsp;&nbsp;&nbsp;&nbsp;100
+                </div>
+                
+                <div class="col-xs-12 col-md-12">
+                  <b>Median House Value:</b> <br>
+                  0&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000" data-slider-step="1000" data-slider-value="[0,1000000]" id="sl2" style="width:150px">&nbsp;&nbsp;&nbsp;&nbsp;1M<br>  
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Map-->
+      <div id="map" class="starter-template"></div>
+    </div>
+    
+    <!--Loading-->
+    <div id="loading">
+      <div class="loading-indicator">
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-info progress-bar-full"></div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!--About Modal-->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!--Close Button-->
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Welcome to NabeFinder!</h4>
+          </div>
+
+          <div class="modal-body">
+            <!--Tabs-->
+            <ul class="nav nav-tabs nav-justified" id="aboutTabs">
+              <li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About the APP</a></li>
+              <li><a href="#slides" data-toggle="tab"><i class="fa fa-slideshare"></i>&nbsp;Slides</a></li>
+              <!--<li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Contact Me</a></li>-->
+              <li><a href="#disclaimer" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a></li>
+            </ul>
+            
+            <div class="tab-content" id="aboutTabsContent">
+              <div class="tab-pane fade active in" id="about">
+                <p>A web APP to find best neighborhood for people with disabilities using data from <a href="https://www.census.gov/programs-surveys/acs/">the American Community Survey</a>, <a href="http://www.cdc.gov/brfss/">the Behavioral Risk Factor Surveillance System (BRFSS)</a>, and <a href="https://developers.google.com/places/">Google Places API</a>, built with <a href="http://getbootstrap.com/">Bootstrap 3</a>, <a href="http://leafletjs.com/" target="_blank">Leaflet</a>, <a href="https://www.mysql.com/">MySQL</a>, and <a href="http://flask.pocoo.org/" target="_blank">Flask</a>. Open source and available on <a href="https://github.com/benhhu" target="_blank">GitHub</a>.</p>
+                <div class="panel panel-primary">
+                  <div class="panel-heading">Features</div>
+                  <ul class="list-group">
+                    <li class="list-group-item">Provides personalized predictions on affordability and health. </li>
+                    <li class="list-group-item">Includes 16 individual neighborhood indicators.</li>
+                    <li class="list-group-item">Weights determined by users' preferences.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="slides" class="tab-pane fade">
+                <div>
+                  <iframe id="ifslides" src="http://slides.com/benh-hu/deck-2-1/embed" height="100%" width="100%" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                </div>
+              </div>
+
+              <div id="disclaimer" class="tab-pane fade text-danger">
+                <p>The data provided on this site is for informational and planning purposes only.</p>
+                <p>Absolutely no accuracy or completeness guarantee is implied or intended. All information on this map is subject to such variations and corrections as might result from a complete title search and/or accurate field survey.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--Legend-->
+    <div class="modal fade" id="legendModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Map Legend</h4>
+          </div>
+          <div class="modal-body">
+            <p>Map Legend goes here...</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-primary" id="feature-title"></h4>
+          </div>
+          <div class="modal-body" id="feature-info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--Attribution Modal-->
+    <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+              Developed by <a href='http://www.hui-hu.com'>Hui Hu</a>
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div id="attribution"></div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+
+    <!-- Slider Javascript file -->
+    <script src="../../static/js/modernizr.js"></script>
+    <!--<script src="../../static/js/jquery.js"></script>-->
+    <script src="../../static/js/bootstrap-slider.js"></script>
+    <!--Google Map API-->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3"></script> 
+    <!--Leaflet Search-->
+    <script src="../../static/js/leaflet-search.js"></script>
+    <!--LocateControl-->
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+
+    <script type="text/javascript" >
+      //Slider
+      $('#sl1').slider();
+      $('#sl2').slider();
+
+
+      $('#remploy').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+      $('#raccess').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rincome').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rmhv').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rhealth').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rpark').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rgrocery').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rhospital').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rdoctor').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rdisable').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rnature').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rbus').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rpharm').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rrestaurant').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rsubway').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rzoo').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rcomctr').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+
+    </script>
+
+    <script type="text/javascript" >
+      //Automatically adjust map height
+      document.getElementById('map').style.height=(window.innerHeight-document.getElementById('navbar').style.height-50)+'px'; 
+
+      //Basic Map
+      //get geojson data from python
+      var tractsData = {{ ress|tojson }};
+
+      //
+      var streets = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',maxZoom: 18,id: 'benhhu.opb60oko',accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'});
+
+      var satelittes = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',maxZoom: 18,id: 'benhhu.opdh5e4d',accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'});
+
+      //
+      var map = L.map('map', {center: [42.358526, -71.058189],zoom: 12,layers:streets});
+
+      var baseLayers = {
+        "Streets": streets,
+        "Satelittes": satelittes
+      };
+
+      L.control.layers(baseLayers,null,{position:'topleft'}).addTo(map);
+      
+      /* GPS enabled geolocation control set*/
+      var locateControl = L.control.locate({
+        position: "topleft",
+        drawCircle: true,
+        follow: true,
+        setView: true,
+        keepCurrentZoomLevel: true,
+        markerStyle: {
+          weight: 1,
+          opacity: 0.8,
+          fillOpacity: 0.8
+        },
+
+        circleStyle: {
+          weight: 1,
+          clickable: false
+        },
+
+        icon: "fa fa-location-arrow",
+        metric: false,
+
+        strings: {
+          title: "My location",
+          popup: "You are within {distance} {unit} from this point",
+          outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
+        },
+
+        locateOptions: {
+          maxZoom: 18,
+          watch: true,
+          enableHighAccuracy: true,
+          maximumAge: 10000,
+          timeout: 10000
+        }
+      }).addTo(map);
+
+      //Set color
+
+      function getColor(d) {
+        return d > 87.5 ? '#6e016b' :
+               d > 75  ? '#88419d' :
+               d > 62.5  ? '#8c6bb1' :
+               d > 50  ? '#8c96c6' :
+               d > 37.5   ? '#9ebcda' :
+               d > 25   ? '#bfd3e6' :
+               d > 12.5   ? '#e0ecf4' :
+               '#f7fcfd';
+             }
+      
+      function style(feature) {
+        return {
+          fillColor: getColor(feature.properties.norm_score),
+          weight: 0.8,
+          opacity: 1,
+          color: 'white',
+          dashArray: '3',
+          fillOpacity: 0.7
+        };
+      }
+
+      //Custom Legend
+      var legend = L.control({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5],
+        labels = [];
+
+        // loop through the intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+        return div;
+      };
+
+      legend.addTo(map);
+
+      //Custom Control
+      var info = L.control();
+
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+      };
+
+      // to update the control based on feature properties passed
+      info.update = function (props) {
+        this._div.innerHTML = '<h4>Neighborhood Score</h4>' +  (props ?
+        '<h4><b>' + props.norm_score.toFixed(0) + '</b></h4>'
+        +'<div align="justify">' 
+        //+ 'Median House Value: $' + props.mhv.toFixed(0) + '<br />'
+        + 'Affordability: <meter max=1.00 min=0.00 value='+props.norm_afford.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + 'Health: <meter max=1.00 min=0.00 value='+props.health.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + 'Accessibility (Overall): <meter max=1.00 min=0.00 value='+props.norm_access.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Care for the Disabled: <meter max=1.00 min=0.00 value='+props.norm_ndisable.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Hospitals: <meter max=1.00 min=0.00 value='+props.norm_nhospital.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Doctors: <meter max=1.00 min=0.00 value='+props.norm_ndoctor.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Pharmacies: <meter max=1.00 min=0.00 value='+props.norm_npharm.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Community Centers: <meter max=1.00 min=0.00 value='+props.norm_ncomctr.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Bus Stations: <meter max=1.00 min=0.00 value='+props.norm_nbus.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Subway Stations: <meter max=1.00 min=0.00 value='+props.norm_nbus.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Restaurants: <meter max=1.00 min=0.00 value='+props.norm_nrestaurant.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Grocery Stores: <meter max=1.00 min=0.00 value='+props.norm_ngrocery.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Natural Features: <meter max=1.00 min=0.00 value='+props.norm_nnature.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Parks: <meter max=1.00 min=0.00 value='+props.norm_npark.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        + '- Zoo: <meter max=1.00 min=0.00 value='+props.norm_nzoo.toFixed(3)+' high=.5 low=.25 optimum=1.0></meter><br />'
+        +'</div>'
+        : 'Hover over a neighborhood');
+      };
+
+      info.addTo(map);
+
+      //Mouseover-change color
+      function highlightFeature(e) {
+        var layer = e.target;
+        
+        layer.setStyle({
+          weight: 5,
+          color: '#666',
+          dashArray: '',
+          fillOpacity: 0.7
+        });
+        
+        if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties);
+      }
+
+      //Mouseout-reset color
+      function resetHighlight(e) {
+        geojson.resetStyle(e.target);
+        info.update();
+      }
+
+      //Click-zoom in
+      function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+      }
+
+      //Add listerns to the map
+      function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+        });
+      }
+
+      geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= 100) && (feature.properties.norm_score >= 0);}});
+      group = L.featureGroup([geojson]).addTo(map);
+
+      //Search Box
+      var geocoder = new google.maps.Geocoder();
+
+      function googleGeocoding(text, callResponse){
+        geocoder.geocode({address: text}, callResponse);
+      }
+
+      function formatJSON(rawjson){
+        var json = {}, 
+        key, loc, disp = [];
+        for(var i in rawjson)
+        {
+          key = rawjson[i].formatted_address;
+          loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
+          json[ key ]= loc; //key,value format
+        }
+        return json;
+      }
+
+      map.addControl( new L.Control.Search({
+        sourceData: googleGeocoding,
+        formatData: formatJSON,
+        markerLocation: true,
+        autoType: false,
+        autoCollapse: true,
+        minLength: 2,
+        zoom: 15
+      }) );
+
+      
+      //
+
+      $('#sl1').slider().on('slideStop', function(ev){
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+
+
+        map.removeLayer(geojson);
+        group.clearLayers();
+
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#sl2').slider().on('slideStop', function(ev){
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+
+
+
+        map.removeLayer(geojson);
+        group.clearLayers();
+
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      </script>
+
+      <script type="text/javascript">
+
+      //Preferences Slider
+      //
+      wemploy = {{ woutput[0] }};
+      waccess = {{ woutput[1] }};
+      whealth = {{ woutput[2] }};
+      wpark = {{ woutput[3] }};
+      wgrocery = {{ woutput[4] }};
+      whospital = {{ woutput[5] }};
+      wdoctor = {{ woutput[6] }};
+      wdisable = {{ woutput[7] }};
+      wnature = {{ woutput[8] }};
+      wbus = {{ woutput[9] }};
+      wpharm = {{ woutput[10] }};
+      wrestaurant = {{ woutput[11] }};
+      wsubway = {{ woutput[12] }};
+      wzoo = {{ woutput[13] }};
+      wcomctr = {{ woutput[14] }};
+
+      $('#remploy').slider('setValue',wemploy);
+      $('#raccess').slider('setValue',waccess);
+      $('#rhealth').slider('setValue',whealth);
+      $('#rpark').slider('setValue',wpark);
+      $('#rgrocery').slider('setValue',wgrocery);
+      $('#rhospital').slider('setValue',whospital);
+      $('#rdoctor').slider('setValue',wdoctor);
+      $('#rdisable').slider('setValue',wdisable);
+      $('#rnature').slider('setValue',wnature);
+      $('#rbus').slider('setValue',wbus);
+      $('#rpharm').slider('setValue',wpharm);
+      $('#rrestaurant').slider('setValue',wrestaurant);
+      $('#rsubway').slider('setValue',wsubway);
+      $('#rzoo').slider('setValue',wzoo);
+      $('#rcomctr').slider('setValue',wcomctr);
+
+      $('#remploy').slider().on('slideStop', function(ev){
+
+        wemploy = $('#remploy').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rincome').slider().on('slideStop', function(ev){
+        
+        wincome = $('#rincome').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rhealth').slider().on('slideStop', function(ev){
+        whealth = $('#rhealth').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rpark').slider().on('slideStop', function(ev){
+        wpark = $('#rpark').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rgrocery').slider().on('slideStop', function(ev){
+        wgrocery = $('#rgrocery').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+      $('#rhospital').slider().on('slideStop', function(ev){
+        whospital = $('#rhospital').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+      $('#rdoctor').slider().on('slideStop', function(ev){
+        wdoctor = $('#rdoctor').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+      $('#rdisable').slider().on('slideStop', function(ev){
+        wdisable = $('#rdisable').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rnature').slider().on('slideStop', function(ev){
+        wnature = $('#rnature').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rbus').slider().on('slideStop', function(ev){
+        wbus = $('#rbus').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rpharm').slider().on('slideStop', function(ev){
+        wpharm = $('#rpharm').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rrestaurant').slider().on('slideStop', function(ev){
+        wrestaurant = $('#rrestaurant').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#rsubway').slider().on('slideStop', function(ev){
+        wsubway = $('#rsubway').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map);  
+      });
+      $('#rzoo').slider().on('slideStop', function(ev){
+        wzoo = $('#rzoo').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+      $('#rcomctr').slider().on('slideStop', function(ev){
+        wcomctr = $('#rcomctr').val();
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+      
+
+      //
+      $("#usecase1").click(function() {
+
+        wemploy = "10";
+        waccess = "10";
+        whealth = "10";
+        wpark = "10";
+        wgrocery = "3";
+        whospital = "1";
+        wdoctor = "1";
+        wdisable = "1";
+        wnature = "1";
+        wbus = "10";
+        wpharm = "1";
+        wrestaurant = "10";
+        wsubway = "10";
+        wzoo = "1";
+        wcomctr = "10";
+
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+    });
+
+
+
+
+    //
+    $("#usecase2").click(function() {
+
+        wemploy = "0";
+        waccess = "10";
+        whealth = "0";
+        wpark = "0";
+        wgrocery = "0";
+        whospital = "10";
+        wdoctor = "0";
+        wdisable = "0";
+        wnature = "0";
+        wbus = "0";
+        wpharm = "0";
+        wrestaurant = "0";
+        wsubway = "0";
+        wzoo = "0";
+        wcomctr = "0";
+
+        
+        $('#remploy').slider('setValue',wemploy);
+        $('#raccess').slider('setValue',waccess);
+        $('#rhealth').slider('setValue',whealth);
+        $('#rpark').slider('setValue',wpark);
+        $('#rgrocery').slider('setValue',wgrocery);
+        $('#rhospital').slider('setValue',whospital);
+        $('#rdoctor').slider('setValue',wdoctor);
+        $('#rdisable').slider('setValue',wdisable);
+        $('#rnature').slider('setValue',wnature);
+        $('#rbus').slider('setValue',wbus);
+        $('#rpharm').slider('setValue',wpharm);
+        $('#rrestaurant').slider('setValue',wrestaurant);
+        $('#rsubway').slider('setValue',wsubway);
+        $('#rzoo').slider('setValue',wzoo);
+        $('#rcomctr').slider('setValue',wcomctr);
+
+
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+        map.removeLayer(geojson);
+        group.clearLayers();
+        //
+        var tractscore = [];
+        var tractaccess =[];
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.access = 
+                  tractsData.features[i].properties.norm_npark*wpark+
+                  tractsData.features[i].properties.norm_ngrocery*wgrocery+
+                  tractsData.features[i].properties.norm_nhospital*whospital+
+                  tractsData.features[i].properties.norm_ndoctor*wdoctor+
+                  tractsData.features[i].properties.norm_ndisable*wdisable+
+                  tractsData.features[i].properties.norm_nnature*wnature+
+                  tractsData.features[i].properties.norm_nbus*wbus+
+                  tractsData.features[i].properties.norm_npharm*wpharm+
+                  tractsData.features[i].properties.norm_nrestaurant*wrestaurant+
+                  tractsData.features[i].properties.norm_nsubway*wsubway+
+                  tractsData.features[i].properties.norm_nzoo*wzoo+
+                  tractsData.features[i].properties.norm_ncomctr*wcomctr;
+          tractaccess.push(tractsData.features[i].properties.access);
+        };
+
+        var tractaccess_max = Math.max.apply(Math,tractaccess);
+        var tractaccess_min = Math.min.apply(Math,tractaccess);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_access = (tractsData.features[i].properties.access-tractaccess_min)/(tractaccess_max-tractaccess_min);
+        };
+
+        for (i = 0; i < tractsData.features.length; i++) { 
+          tractsData.features[i].properties.score = 
+                  tractsData.features[i].properties.norm_afford*wemploy+
+                  tractsData.features[i].properties.norm_access*waccess+
+                  tractsData.features[i].properties.norm_health*whealth;
+          tractscore.push(tractsData.features[i].properties.score);
+        };
+        var tractscore_max = Math.max.apply(Math,tractscore);
+        var tractscore_min = Math.min.apply(Math,tractscore);
+
+        for (i = 0; i < tractsData.features.length; i++) {
+          tractsData.features[i].properties.norm_score = 100*(tractsData.features[i].properties.score-tractscore_min)/(tractscore_max-tractscore_min);
+        }; 
+        //
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+    });
+
+    </script>
+
+    <!--App-->
+    <script type="text/javascript" >
+    //Resize map automatically
+    $(window).resize(function() {
+      document.getElementById('map').style.height=(window.innerHeight-document.getElementById('navbar').style.height-50)+'px'; 
+    });
+
+    $("#about-btn").click(function() {
+      $("#aboutModal").modal("show");
+      $(".navbar-collapse.in").collapse("hide");
+      return false;
+    });
+
+    $("#full-extent-btn").click(function() {
+      map.fitBounds(geojson.getBounds());
+      $(".navbar-collapse.in").collapse("hide");
+      return false;
+    });
+
+    $("#list-btn").click(function() {
+      $('#sidebar').toggle();
+      map.invalidateSize();
+      return false;
+    });
+
+    $("#nav-btn").click(function() {
+      $(".navbar-collapse").collapse("toggle");
+      return false;
+    });
+
+    $("#sidebar-toggle-btn").click(function() {
+      $("#sidebar").toggle();
+      map.invalidateSize();
+      return false;
+    });
+
+    $("#sidebar-hide-btn").click(function() {
+      $('#sidebar').hide();
+      map.invalidateSize();
+    });
+
+
+    function clearHighlight() {
+      highlight.clearLayers();
+    }
+
+    function sidebarClick(id) {
+      var layer = markerClusters.getLayer(id);
+      map.setView([layer.getLatLng().lat, layer.getLatLng().lng], 17);
+      layer.fire("click");
+
+    /* Hide sidebar and go to the map on small screens */
+      if (document.body.clientWidth <= 767) {
+        $("#sidebar").hide();
+        map.invalidateSize();
+      }
+    }
+
+    $(document).ready(function() {
+      $("#loading").hide();
+      //console.log("ready!");
+    });
+
+    </script>
+
+    <!--Google Analytics-->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-67460050-2', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+  </body>
+</html>

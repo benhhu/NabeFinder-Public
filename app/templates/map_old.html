@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Find the Best Neighborhood for People with Disabilities</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.css">
+
+    <link rel="stylesheet" href="../../static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.css">
+    <link rel="stylesheet" href="../../static/css/app.css">
+    <link rel="apple-touch-icon" sizes="76x76" href="../../static/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../static/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../static/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="../../static/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="../../static/img/favicon.ico">
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/starter-template.css" rel="stylesheet">
+    <!--Slider CSS-->
+    <link href="../../static/css/slider.css" rel="stylesheet">
+ 
+  </head>
+
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
+            <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
+          </div>
+          <a class="navbar-brand" href="#">Neighborhood for the Disabled</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <!--<form class="navbar-form navbar-right" role="search">
+            <div class="form-group has-feedback">
+                <input id="searchbox" type="text" placeholder="Search" class="form-control">
+                <span id="searchicon" class="fa fa-search form-control-feedback"></span>
+            </div>
+          </form>
+        -->
+          <ul class="nav navbar-nav">
+            <li><a href="/" data-toggle="collapse" data-target=".navbar-collapse.in" id="home-btn"><i class="fa fa-home white"></i>&nbsp;&nbsp;Home</a></li>
+            <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
+            <li class="dropdown">
+              <a id="toolsDrop" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-globe white"></i>&nbsp;&nbsp;Tools <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="full-extent-btn"><i class="fa fa-arrows-alt"></i>&nbsp;&nbsp;Zoom To Full Extent</a></li>
+                <!--<li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="legend-btn"><i class="fa fa-picture-o"></i>&nbsp;&nbsp;Show Legend</a></li>
+
+                <li class="divider hidden-xs"></li>
+              --> 
+              </ul>
+            </li>
+            <!--
+            <li class="dropdown">
+                <a class="dropdown-toggle" id="downloadDrop" href="#" role="button" data-toggle="dropdown"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="data/boroughs.geojson" download="boroughs.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Boroughs</a></li>
+                  <li><a href="data/subways.geojson" download="subways.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Subway Lines</a></li>
+                  <li><a href="data/DOITT_THEATER_01_13SEPT2010.geojson" download="theaters.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Theaters</a></li>
+                  <li><a href="data/DOITT_MUSEUM_01_13SEPT2010.geojson" download="museums.geojson" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Museums</a></li>
+                </ul>
+            </li>
+            -->
+            <li class="hidden-xs"><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="list-btn"><i class="fa fa-list white"></i>&nbsp;&nbsp;Filters</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <div id="container">
+      <!--Sidebar-->
+      <div id="sidebar">
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="features">
+            
+            <div class="panel-heading">
+              <h3 class="panel-title">Filters
+              <button type="button" class="btn btn-xs btn-default pull-right" id="sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            
+            <div class="panel-body">
+              <!--Search box and sort-->
+              <div class="row">
+                <!--<div class="col-xs-8 col-md-8">
+                  <input type="text" class="form-control search" placeholder="Filter" />
+                </div>
+              -->
+                <!--<div class="col-xs-4 col-md-4">
+                  <button type="button" class="btn btn-primary pull-right sort" data-sort="feature-name" id="sort-btn"><i class="fa fa-sort"></i>&nbsp;&nbsp;Sort</button>
+                </div>
+              -->
+                <div class="col-xs-12 col-md-12">
+                  <b>Neighborhood Score:</b> <br>
+                  0&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,100]" id="sl1">&nbsp;&nbsp;&nbsp;&nbsp;100
+                </div>
+                
+                <div class="col-xs-12 col-md-12">
+                  <b>Median House Value:</b> <br>
+                  0&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000000" data-slider-step="1000" data-slider-value="[0,1000000]" id="sl2">&nbsp;&nbsp;&nbsp;&nbsp;1M<br>
+                  <hr class="small">
+                </div>
+                
+                <div class="row text-center">
+                  <br>
+                  <b>Preferences</b>
+                </div>
+                
+                <div class="col-xs-12 col-md-12">
+                  <b>Probability of Employment</b><br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="remploy" name="remploy" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                  <b>Income</b><br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rincome" name="rincome" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Median House Value</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rmhv" name="rmhv" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Health</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rhealth" name="rhealth" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                  <h4>Accessibility to</h4>
+                  <b>Parks</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rpark" name="rpark" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Grocery Stores</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rgrocery" name="rgrocery" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Hospitals</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rhospital" name="rhospital" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Doctors</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rdoctor" name="rdoctor" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Health Facilities for the Disabled</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rdisable" name="rdisable" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Natural Features</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rnature" name="rnature" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Bus Stations</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rbus" name="rbus" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Pharmacies</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rpharm" name="rpharm" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Restaurants</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rrestaurant" name="rrestaurant" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Subway Stations</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rsubway" name="rsubway" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Zoo</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rzoo" name="rzoo" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  <b>Community Centers</b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rcomctr" name="rcomctr" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                </div>
+
+
+              </div>
+            </div>
+            
+            <!--Feature list
+            <div class="sidebar-table">
+              <table class="table table-hover" id="feature-list">
+                <thead class="hidden">
+                  <tr>
+                    <th>Icon</th>
+                  <tr>
+                  <tr>
+                    <th>Name</th>
+                  <tr>
+                  <tr>
+                    <th>Chevron</th>
+                  <tr>
+                </thead>
+                <tbody class="list"></tbody>
+              </table>
+            </div>
+            -->
+          </div>
+        </div>
+      </div>
+      <!--Map-->
+      <div id="map" class="starter-template"></div>
+    </div>
+    
+    <!--Loading-->
+    <div id="loading">
+      <div class="loading-indicator">
+        <div class="progress progress-striped active">
+          <div class="progress-bar progress-bar-info progress-bar-full"></div>
+        </div>
+      </div>
+    </div>
+
+    
+
+    <!--About Modal-->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!--Close Button-->
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Welcome to Neighborhood for the Disabled!</h4>
+          </div>
+
+          <div class="modal-body">
+            <!--Tabs-->
+            <ul class="nav nav-tabs nav-justified" id="aboutTabs">
+              <li class="active"><a href="#about" data-toggle="tab"><i class="fa fa-question-circle"></i>&nbsp;About the APP</a></li>
+              <li><a href="#contact" data-toggle="tab"><i class="fa fa-envelope"></i>&nbsp;Contact Me</a></li>
+              <li><a href="#disclaimer" data-toggle="tab"><i class="fa fa-exclamation-circle"></i>&nbsp;Disclaimer</a></li>
+            </ul>
+            
+            <div class="tab-content" id="aboutTabsContent">
+              <div class="tab-pane fade active in" id="about">
+                <p>A web applications to find best neighborhoods for people with disabilities, built with <a href="http://getbootstrap.com/">Bootstrap 3</a>, <a href="http://leafletjs.com/" target="_blank">Leaflet</a>, <a href="http://flask.pocoo.org/" target="_blank">Flask</a>, and <a href="http://twitter.github.io/typeahead.js/" target="_blank">typeahead.js</a>. Open source and available on <a href="https://github.com/benhhu" target="_blank">GitHub</a>.</p>
+                <div class="panel panel-primary">
+                  <div class="panel-heading">Features</div>
+                  <ul class="list-group">
+                    <li class="list-group-item">Gives personalized predictions on income and probability of employment and health.</li>
+                    <li class="list-group-item">Includes 15 neighborhood indicators.</li>
+                    <li class="list-group-item">Weights determined by users' preferences.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="disclaimer" class="tab-pane fade text-danger">
+                <p>The data provided on this site is for informational and planning purposes only.</p>
+                <p>Absolutely no accuracy or completeness guarantee is implied or intended. All information on this map is subject to such variations and corrections as might result from a complete title search and/or accurate field survey.</p>
+              </div>
+              
+              <!--Contact Me-->
+              <div class="tab-pane fade" id="contact">
+                <form id="contact-form">
+                  <div class="well well-sm">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label for="first-name">First Name:</label>
+                          <input type="text" class="form-control" id="first-name">
+                        </div>
+                        <div class="form-group">
+                          <label for="last-name">Last Name:</label>
+                          <input type="text" class="form-control" id="last-email">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Email:</label>
+                          <input type="text" class="form-control" id="email">
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <label for="message">Message:</label>
+                        <textarea class="form-control" rows="8" id="message"></textarea>
+                      </div>
+                      <div class="col-md-12">
+                        <p>
+                          <button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Submit</button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--Legend-->
+    <div class="modal fade" id="legendModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Map Legend</h4>
+          </div>
+          <div class="modal-body">
+            <p>Map Legend goes here...</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div class="modal fade" id="featureModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title text-primary" id="feature-title"></h4>
+          </div>
+          <div class="modal-body" id="feature-info"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!--Attribution Modal-->
+    <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+              Developed by <a href='http://www.hui-hu.com'>Hui Hu</a>
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div id="attribution"></div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/3.0.3/handlebars.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.43.0/L.Control.Locate.min.js"></script>
+
+    <!-- Leaflet Javascript file 
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    -->
+    <!--<script src="/js/leaflet-0.7.2/leaflet.ajax.min.js"></script>-->
+
+    <!-- Slider Javascript file -->
+    <script src="../../static/js/modernizr.js"></script>
+    <!--<script src="../../static/js/jquery.js"></script>-->
+    <script src="../../static/js/bootstrap-slider.js"></script>
+
+
+    <!--
+    <script src="../static/leaflet-groupedlayercontrol/leaflet.groupedlayercontrol.js"></script>
+    
+    <script src="../../static/js/app.js"></script>
+    -->
+
+    <script type="text/javascript" >
+      //Slider
+      $('#sl1').slider();
+      $('#sl2').slider();
+    </script>
+
+    <script type="text/javascript" >
+      //Automatically adjust map height
+      document.getElementById('map').style.height=(window.innerHeight-document.getElementById('navbar').style.height-50)+'px';   //50
+
+      //Basic Map
+
+      //get geojson data from python
+      var tractsData = {{ ress|tojson }};
+
+      //
+      var streets = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',maxZoom: 18,id: 'benhhu.opb60oko',accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'});
+
+      var satelittes = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',maxZoom: 18,id: 'benhhu.opdh5e4d',accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'});
+
+      //
+      //var map = L.map('map').setView([42.358526, -71.058189], 12, layers: streets);
+
+      var map = L.map('map', {center: [42.358526, -71.058189],zoom: 12,layers:streets});
+
+      var baseLayers = {
+        "Streets": streets,
+        "Satelittes": satelittes
+      };
+
+      L.control.layers(baseLayers,null,{position:'topleft'}).addTo(map);
+
+      //Set color
+
+      function getColor(d) {
+        return d > 87.5 ? '#800026' :
+               d > 75  ? '#BD0026' :
+               d > 62.5  ? '#E31A1C' :
+               d > 50  ? '#FC4E2A' :
+               d > 37.5   ? '#FD8D3C' :
+               d > 25   ? '#FEB24C' :
+               d > 12.5   ? '#FED976' :
+               '#FFEDA0';
+             }
+      
+      function style(feature) {
+        return {
+          fillColor: getColor(feature.properties.norm_score),
+          weight: 0.8,
+          opacity: 1,
+          color: 'white',
+          dashArray: '3',
+          fillOpacity: 0.5
+        };
+      }
+
+      //Custom Legend
+      var legend = L.control({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5],
+        labels = [];
+
+        // loop through the intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+        return div;
+      };
+
+      legend.addTo(map);
+
+      //Custom Control
+      var info = L.control();
+
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+      };
+
+      // method that we will use to update the control based on feature properties passed
+      info.update = function (props) {
+        this._div.innerHTML = '<h4>Neighborhood Score</h4>' +  (props ?
+        '<h4><b>' + props.norm_score + '</b></h4>' 
+        + 'Probability of Employment: ' + props.employ.toFixed(2) + '<br />'
+        + 'Income: ' + props.income.toFixed(0) + '<br />'
+        + 'Median House Value: ' + props.mhv.toFixed(0) + '<br />'
+        + 'Probability of Good Health: ' + props.health.toFixed(2) + '<br />'
+        + 'Accessibility to <br />'
+        + 'Health Facilities for the Disabled: ' + props.norm_ndisable.toFixed(2) + '<br />'
+        + 'Hospitals: ' + props.norm_nhospital.toFixed(2) + '<br />'
+        + 'Doctors: ' + props.norm_ndoctor.toFixed(2) + '<br />'
+        + 'Parks: ' + props.norm_npark.toFixed(2) + '<br />'
+        + 'Pharmacies: ' + props.norm_npharm.toFixed(2) + '<br />'
+        + 'Community Centers: ' + props.norm_ncomctr.toFixed(2) + '<br />'
+        + 'Bus Stations: ' + props.norm_nbus.toFixed(2) + '<br />'
+        + 'Subway Stations: ' + props.norm_nsubway.toFixed(2) + '<br />'
+        + 'Restaurants: ' + props.norm_nrestaurant.toFixed(2) + '<br />'
+        + 'Grocery Stores: ' + props.norm_ngrocery.toFixed(2) + '<br />'
+        + 'Natural Features: ' + props.norm_nnature.toFixed(2) + '<br />'
+        + 'Zoo: ' + props.norm_nzoo.toFixed(2) + '<br />'
+        : 'Hover over a neighborhood');
+      };
+
+      info.addTo(map);
+
+      //Mouseover-change color
+      function highlightFeature(e) {
+        var layer = e.target;
+        
+        layer.setStyle({
+          weight: 5,
+          color: '#666',
+          dashArray: '',
+          fillOpacity: 0.7
+        });
+        
+        if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties);
+      }
+
+      //Mouseout-reset color
+      function resetHighlight(e) {
+        geojson.resetStyle(e.target);
+        info.update();
+      }
+
+      //Click-zoom in
+      function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+      }
+
+      //Add listerns to the map
+      function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+        });
+      }
+
+      geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= 100) && (feature.properties.norm_score >= 0);}});
+      group = L.featureGroup([geojson]).addTo(map);
+
+      $('#sl1').slider().on('slideStop', function(ev){
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+
+
+        map.removeLayer(geojson);
+        group.clearLayers();
+
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+      $('#sl2').slider().on('slideStop', function(ev){
+        rangeMin1 = $('#sl1').val().split(',')[0];
+        rangeMax1 = $('#sl1').val().split(',')[1];
+        if ($('#sl1').val()==""){rangeMin1=0;rangeMax1=100;};
+
+        rangeMin2 = $('#sl2').val().split(',')[0];
+        rangeMax2 = $('#sl2').val().split(',')[1];
+        if ($('#sl2').val()==""){rangeMin1=0;rangeMax2=1000000;};
+
+
+
+        map.removeLayer(geojson);
+        group.clearLayers();
+
+        geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax1) 
+                               && (feature.properties.norm_score >= rangeMin1)
+                               && (feature.properties.mhv <= rangeMax2)
+                               && (feature.properties.mhv >= rangeMin2)
+                               ;}});
+        group = L.featureGroup().addLayer(geojson);
+        group.addTo(map); 
+      });
+
+
+    </script>
+
+    <!--App-->
+    <script type="text/javascript" >
+    //Resize map automatically
+    $(window).resize(function() {
+      document.getElementById('map').style.height=(window.innerHeight-document.getElementById('navbar').style.height-50)+'px'; 
+    });
+
+    $("#about-btn").click(function() {
+      $("#aboutModal").modal("show");
+      $(".navbar-collapse.in").collapse("hide");
+      return false;
+    });
+
+    $("#full-extent-btn").click(function() {
+      map.fitBounds(geojson.getBounds());
+      $(".navbar-collapse.in").collapse("hide");
+      return false;
+    });
+
+    $("#list-btn").click(function() {
+      $('#sidebar').toggle();
+      map.invalidateSize();
+      return false;
+    });
+
+    $("#nav-btn").click(function() {
+      $(".navbar-collapse").collapse("toggle");
+      return false;
+    });
+
+    $("#sidebar-toggle-btn").click(function() {
+      $("#sidebar").toggle();
+      map.invalidateSize();
+      return false;
+    });
+
+    $("#sidebar-hide-btn").click(function() {
+      $('#sidebar').hide();
+      map.invalidateSize();
+    });
+
+
+    function clearHighlight() {
+      highlight.clearLayers();
+    }
+
+    function sidebarClick(id) {
+      var layer = markerClusters.getLayer(id);
+      map.setView([layer.getLatLng().lat, layer.getLatLng().lng], 17);
+      layer.fire("click");
+
+    /* Hide sidebar and go to the map on small screens */
+      if (document.body.clientWidth <= 767) {
+        $("#sidebar").hide();
+        map.invalidateSize();
+      }
+    }
+
+    $(document).ready(function() {
+      $("#loading").hide();
+      //console.log("ready!");
+    });
+    
+
+
+    </script>
+
+  </body>
+</html>

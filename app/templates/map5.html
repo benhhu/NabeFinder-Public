@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Find the Best Neighborhood for People with Disabilities</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<link href="../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
+
+    <!-- Custom styles for this template -->
+    <link href="../../static/css/starter-template.css" rel="stylesheet">
+ 
+    <!-- Leaflet CSS file -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+    <!--Slider CSS-->
+    <link href="../../static/css/slider.css" rel="stylesheet">
+
+    <style type = "text/css">
+      body {
+        padding-top: 50px;
+      }
+      .starter-template {
+        padding: 40px 15px;
+        text-align: center;
+      }
+      #map { 
+        height: 600px; 
+      }
+      .info {
+          padding: 6px 8px;
+          font: 14px/16px Arial, Helvetica, sans-serif;
+          text-align: left;
+          background: white;
+          background: rgba(255,255,255,0.8);
+          box-shadow: 0 0 15px rgba(0,0,0,0.2);
+          border-radius: 5px;
+      }
+      .info h4 {
+          margin: 0 0 5px;
+          color: #777;
+          text-align: center;
+      }
+      .legend {
+          line-height: 18px;
+          color: #555;
+      }
+      .legend i {
+          width: 18px;
+          height: 18px;
+          float: left;
+          margin-right: 8px;
+          opacity: 0.7;
+      }
+
+
+    </style>
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
+
+    <!-- Leaflet Javascript file -->
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <!--<script src="/js/leaflet-0.7.2/leaflet.ajax.min.js"></script>-->
+
+    <!-- Slider Javascript file -->
+    <script src="../../static/js/modernizr.js"></script>
+    <script src="../../static/js/jquery.js"></script>
+    <script src="../../static/js/bootstrap-slider.js"></script>
+
+    
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+
+  	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Neighborhood for the Disabled</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+	<!--<br><br>-->
+
+  <!--Slider-->
+
+  <div>
+    Filter by Neighborhood Score: <b> 0 </b> <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="[0,100]" id="sl1"> <b> 100 </b>
+  </div>
+
+
+ <!--Leafelet Map-->
+  	<div id="map" class="starter-template">
+
+  	</div>
+
+    <!--Load geojson file-->
+    <!--<script type="text/javascript" src="tract.js"></script>-->
+
+
+    <script type="text/javascript" >
+
+      //Slider
+      $('#sl1').slider();
+      
+
+    </script>
+
+    <script type="text/javascript" >
+      //Automatically adjust map height
+      document.getElementById('map').style.height=(window.innerHeight-document.getElementById('navbar').style.height-150)+'px';   //50
+
+
+
+      //Basic Map
+
+      //get geojson data from python
+      var tractsData = {{ ress|tojson }};
+
+
+      //
+      var streets = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',maxZoom: 18,id: 'benhhu.opb60oko',accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'});
+
+      var satelittes = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',maxZoom: 18,id: 'benhhu.opdh5e4d',accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'});
+
+      //
+      //var map = L.map('map').setView([42.358526, -71.058189], 12, layers: streets);
+
+      var map = L.map('map', {center: [42.358526, -71.058189],zoom: 12,layers:streets});
+
+      var baseLayers = {
+        "Streets": streets,
+        "Satelittes": satelittes
+      };
+
+      L.control.layers(baseLayers).addTo(map);
+
+
+      //L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> Developed by <a href="http://www.hui-hu.com">Hui Hu</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      //maxZoom: 18,
+      //id: 'benhhu.opb60oko',
+      //accessToken: 'pk.eyJ1IjoiYmVuaGh1IiwiYSI6ImNpanJsMWQxMzBjMG11MmtvcDZobmxrejYifQ.UmKNKDFYvxzipwDSla4bhA'}).addTo(map);
+
+      //L.geoJson(tractsData).addTo(map);
+
+      //Set color
+
+      function getColor(d) {
+        return d > 87.5 ? '#800026' :
+               d > 75  ? '#BD0026' :
+               d > 62.5  ? '#E31A1C' :
+               d > 50  ? '#FC4E2A' :
+               d > 37.5   ? '#FD8D3C' :
+               d > 25   ? '#FEB24C' :
+               d > 12.5   ? '#FED976' :
+               '#FFEDA0';
+             }
+      
+      function style(feature) {
+        return {
+          fillColor: getColor(feature.properties.norm_score),
+          weight: 0.8,
+          opacity: 1,
+          color: 'white',
+          dashArray: '3',
+          fillOpacity: 0.5
+        };
+      }
+
+      //Custom Legend
+      var legend = L.control({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 12.5, 25.0, 37.5, 50.0, 62.5, 75.0, 87.5],
+        labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+        return div;
+      };
+
+      legend.addTo(map);
+
+      //Custom Control
+      var info = L.control();
+
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+      };
+
+      // method that we will use to update the control based on feature properties passed
+      info.update = function (props) {
+        this._div.innerHTML = '<h4>Neighborhood Score</h4>' +  (props ?
+        '<h4><b>' + props.norm_score + '</b></h4>' 
+        + 'Probability of Employment: ' + props.employ.toFixed(2) + '<br />'
+        + 'Income: ' + props.income.toFixed(0) + '<br />'
+        + 'Probability of Good Health: ' + props.health.toFixed(2) + '<br />'
+        + 'Accessibility to <br />'
+        + 'Health Facilities for the Disabled: ' + props.norm_ndisable.toFixed(2) + '<br />'
+        + 'Hospitals: ' + props.norm_nhospital.toFixed(2) + '<br />'
+        + 'Doctors: ' + props.norm_ndoctor.toFixed(2) + '<br />'
+        + 'Parks: ' + props.norm_npark.toFixed(2) + '<br />'
+        + 'Pharmacies: ' + props.norm_npharm.toFixed(2) + '<br />'
+        + 'Community Centers: ' + props.norm_ncomctr.toFixed(2) + '<br />'
+        + 'Bus Stations: ' + props.norm_nbus.toFixed(2) + '<br />'
+        + 'Subway Stations: ' + props.norm_nsubway.toFixed(2) + '<br />'
+        + 'Restaurants: ' + props.norm_nrestaurant.toFixed(2) + '<br />'
+        + 'Grocery Stores: ' + props.norm_ngrocery.toFixed(2) + '<br />'
+        + 'Natural Features: ' + props.norm_nnature.toFixed(2) + '<br />'
+        + 'Zoo: ' + props.norm_nzoo.toFixed(2) + '<br />'
+        : 'Hover over a neighborhood');
+      };
+
+      info.addTo(map);
+
+      //Mouseover-change color
+      function highlightFeature(e) {
+        var layer = e.target;
+        
+        layer.setStyle({
+          weight: 5,
+          color: '#666',
+          dashArray: '',
+          fillOpacity: 0.7
+        });
+        
+        if (!L.Browser.ie && !L.Browser.opera) {
+          layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties);
+      }
+
+      //Mouseout-reset color
+      function resetHighlight(e) {
+        geojson.resetStyle(e.target);
+        info.update();
+      }
+
+      //Click-zoom in
+      function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+      }
+
+      //Add listerns to the map
+      function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomToFeature
+        });
+      }
+
+      //geojson = L.geoJson(tractsData, {style: style,onEachFeature: onEachFeature}).addTo(map);
+      geojson = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= 100) && (feature.properties.norm_score >= 0);}});
+      group = L.featureGroup([geojson]).addTo(map);
+
+      //var sl1 = document.getElementById("sl1");
+      
+      //range = sl1.value;
+      //rangeMin = range.slice(0,1).toString();
+      //rangeMax = range.slice(1).toString();
+
+      $('#sl1').slider().on('slideStop', function(ev){
+        range = $("#sl1").val();
+        rangeMin = $('#sl1').val().split(',')[0];
+        rangeMax = $('#sl1').val().split(',')[1];
+        map.removeLayer(geojson);
+        group.clearLayers();
+
+        newlayer = L.geoJson(tractsData, {style: style, onEachFeature: onEachFeature, filter: function(feature, layer){return (feature.properties.norm_score <= rangeMax) && (feature.properties.norm_score >= rangeMin);}});
+        group = L.featureGroup().addLayer(newlayer);
+        group.addTo(map); 
+      });
+
+    </script>
+
+
+
+
+
+
+ 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="../../static/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>-->
+    <!--<script src="../../dist/js/bootstrap.min.js"></script>-->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+
+
+  </body>
+</html>

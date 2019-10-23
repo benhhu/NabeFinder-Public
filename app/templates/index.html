@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>NabeFinder - Find the Best Neighborhood for People with Disabilities</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/css/stylish-portfolio.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../static/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--Favicon-->
+    <link rel="apple-touch-icon" sizes="76x76" href="../../static/img/favicon-76.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="../../static/img/favicon-120.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="../../static/img/favicon-152.png">
+    <link rel="icon" sizes="196x196" href="../../static/img/favicon-196.png">
+    <link rel="icon" type="image/x-icon" href="../../static/img/favicon.ico">
+    <!--Slider CSS-->
+    <link href="../../static/css/slider.css" rel="stylesheet">
+
+    <!--Recaptcha-->
+    <script src='//www.google.com/recaptcha/api.js'></script>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top"  onclick = $("#menu-close").click(); >NabeFinder</a>
+            </li>
+            <li>
+                <a href="#top" onclick = $("#menu-close").click(); >Home</a>
+            </li>
+            <li>
+                <a href="#about" onclick = $("#menu-close").click(); >Tell Us About Yourself</a>
+            </li>
+            <li>
+                <a href="#services" onclick = $("#menu-close").click(); >Basic Informaiton</a>
+            </li>
+            <li>
+                <a href="#portfolio" onclick = $("#menu-close").click(); >Health</a>
+            </li>
+            <li>
+                <a href="#contact" onclick = $("#menu-close").click(); >Perferences</a>
+            </li>
+            <li>
+                <a href="#" id="about-btn">Slides</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!---->
+    <!--About Modal-->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+            <!--Close Button-->
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Welcome to NabeFinder!</h4>
+          </div>
+
+          <div class="modal-body">
+                <div>
+                  <iframe id="ifslides" src="http://slides.com/benh-hu/deck-2-1/embed" height="100%" width="100%" scrolling="no" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                </div>              
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Header -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h2 style="color:white">NabeFinder</h2>
+            <h1 style="color:white">Find the Best Neighborhood for People with Disabilities</h1>
+            <h3 style="color:white">Massachusetts, United States</h3>
+            <br>
+            <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
+        </div>
+    </header>
+
+    <!-- Disabilities -->
+    <form  action="/output" method="POST" name="myForm">
+    <div class="form-group">
+    <section id="about" class="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Tell Us About Yourslef!</h2>
+                    <p class="lead">So that we can give you some personalized recommendations.</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Services -->
+    <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
+    <section id="services" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Basic Information</h2>
+                    <hr class="small">
+                    
+                    <div class="row">
+                        
+                        <div class="col-md-12 col-sm-12">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wheelchair fa-stack-1x text-primary"></i>
+                            </span>
+                                <h3>
+                                    <strong>Have any health problem that requires you to use special equipment?</strong>
+                                </h3>
+                                <h4>
+                                <input type="radio" id="useequip" name="useequip" value=1 checked="checked"> Yes
+                                <input type="radio" id="useequip" name="useequip" value=0> No
+                                </h4>
+
+                                <h3>
+                                    <strong>Limited in any way in any activities because of physical, mental, or emotional problem?</strong>
+                                </h3>
+                                <h4>
+                                <input type="radio" id="qlactlm2" name="qlactlm2" value=1 checked="checked"> Yes
+                                <input type="radio" id="qlactlm2" name="qlactlm2" value=0> No
+                                </h4>
+                                
+                                <h3>
+                                    <strong>Difficulties you have:</strong>
+                                </h3>
+                                <h4>
+                                <input type="checkbox" id="selfcare" name="selfcare" value=1> Self-care&nbsp;&nbsp;
+                                <input type="checkbox" id="hear" name="hear" value=1> Hearing&nbsp;&nbsp;
+                                <input type="checkbox" id="vision" name="vision" value=1> Vision&nbsp;&nbsp;
+                                <input type="checkbox" id="idpliv" name="idpliv" value=1> Independent Living&nbsp;&nbsp;
+                                <input type="checkbox" id="ambulatory" name="ambulatory" value=1> Ambulatory&nbsp;&nbsp;
+                                <input type="checkbox" id="cognitive" name="cognitive" value=1> Cognitive
+                                </h4><br>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-venus-mars fa-stack-1x text-primary"></i>
+                            </span>
+                                <h3>
+                                    <strong>Gender</strong>
+                                </h3>
+                                <select id="gender" name="gender" style="color:black;">
+                                    <option value=1>Male</option>
+                                    <option value=0>Female</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-birthday-cake fa-stack-1x text-primary"></i>
+                            </span>
+                                <h3>
+                                    <strong>Age</strong>
+                                </h3>
+                                <input type="number" id="age" name="age" min=18 max=100 value=35 style="color:black" required> <br>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-book fa-stack-1x text-primary"></i>
+                            </span>
+                                <h3>
+                                    <strong>Education</strong>
+                                </h3>
+                                <select id="schl" name="schl" width="100" style="width: 100px;color:black;">
+                                  <option value=1>No schooling completed</option>
+                                  <option value=2>Nursery school, preschool</option>
+                                  <option value=3>Kindergarten</option>
+                                  <option value=4>Grade 1</option>
+                                  <option value=5>Grade 2</option>
+                                  <option value=6>Grade 3</option>
+                                  <option value=7>Grade 4</option>
+                                  <option value=8>Grade 5</option>
+                                  <option value=9>Grade 6</option>
+                                  <option value=10>Grade 7</option>
+                                  <option value=11>Grade 8</option>
+                                  <option value=12>Grade 9</option>
+                                  <option value=13>Grade 10</option>
+                                  <option value=14>Grade 11</option>
+                                  <option value=15>12th grade - no diploma</option>
+                                  <option value=16>Regular high school diploma</option>
+                                  <option value=17>GED or alternative credential</option>
+                                  <option value=18>Some college, but less than 1 year</option>
+                                  <option value=19>One or more years of college credit, no degree</option>
+                                  <option value=20>Associate's degree</option>
+                                  <option value=21>Bachelor's degree</option>
+                                  <option value=22>Master's degree</option>
+                                  <option value=23>Professional degree beyond a bachelor's degree</option>
+                                  <option value=24>Doctorate degree</option>
+                                </select>
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col-md-7 col-sm-7">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-arrows-h fa-stack-1x text-primary"></i>
+                            </span>
+                                <h3>
+                                    <strong>Weight</strong>
+                                </h3>
+                                <input type="number" id="weight" name="weight" value=150 min=0 max=500 step=1 style="color:black" required>lbs
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-arrows-v fa-stack-1x text-primary"></i>
+                            </span>
+                                <h3>
+                                    <strong>Height</strong>
+                                </h3>
+                                <input type="number" id="height_feet" name="height_feet" value=6 min=0 max=8 step=1 style="color:black" required>ft
+                                <input type="number" id="height_inch" name="height_inch" value=2 min=0 max=11 step=1 style="color:black" required>in
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Callout -->
+    <div class="span4 collapse-group" id="clg">
+    <div class="collapse">
+    <aside class="callout">
+       <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Socioeconomics</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-heart-o fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Marital Status</strong>
+                                </h4>
+                                <select id="marital" name="marital" width="100" style="width: 100px;color:black;">
+                                  <option value=1>Married</option>
+                                  <option value=2>Widowed</option>
+                                  <option value=3>Divorced</option>
+                                  <option value=4>Separated</option>
+                                  <option value=5>Never married or under 15 years old</option>
+                                  <option value=6>A member of an unmarried couple</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-users fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Race</strong>
+                                </h4>
+                                <select id="race" name="race" width="100" style="width: 100px;color:black;">
+                                  <option value=1>White alone</option>
+                                  <option value=2>Black or African American alone</option>
+                                  <option value=3>American Indian alone</option>
+                                  <option value=4>Alaska Native alone</option>
+                                  <option value=5>American Indian and Alaska Native</option>
+                                  <option value=6>Asian alone</option>
+                                  <option value=7>Native Hawaiian and Other Pacific Islander alone</option>
+                                  <option value=8>Some Other Race alone</option>
+                                  <option value=9>Two or More Races</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-briefcase fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Employment</strong>
+                                </h4>
+                                <select id="cow" name="cow" width="100" style="width: 100px;color:black;">
+                                  <option value=1>Employee of a private for-profit company or business, or of an individual, for wages, salary, or commissions.</option>
+                                  <option value=2>Employee of a private not-for-profit, tax-exempt, or charitable organization</option>
+                                  <option value=3>Local government employee (city, county, etc.)</option>
+                                  <option value=4>State government employee</option>
+                                  <option value=5>Federal government employee</option>
+                                  <option value=6>Self-employed in own not incorporated business, professional practice or farm</option>
+                                  <option value=7>Self-employed in own incorporated business, professional practice or farm</option>
+                                  <option value=8>Working without pay in family business or farm</option>
+                                  <option value=9>Unemployed and last worked 5 years ago or earlier or never worked</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-globe fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Born Area</strong>
+                                </h4>
+                                <select id="waob" name="waob" width="100" style="width: 100px;color:black;">
+                                  <option value=1>US State</option>
+                                  <option value=2>Puerto Rico and US Island Areas</option>
+                                  <option value=3>Latin America</option>
+                                  <option value=4>Asia</option>
+                                  <option value=5>Europe</option>
+                                  <option value=6>Africa</option>
+                                  <option value=7>Northen America</option>
+                                  <option value=8>Oceania and at Sea</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-user fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Spanish/Hispanic/Latino</strong>
+                                </h4>
+                                <select id="hispanic" name="hispanic" style="color:black;">
+                                    <option value=1>Yes</option>
+                                    <option value=0 selected="selected">No</option>                        
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-language fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Speak Language Other than English at Home</strong>
+                                </h4>
+                                <select id="lanx" name="lanx" style="color:black;">
+                                    <option value=1>Yes</option>
+                                    <option value=0 selected="selected">No</option>                        
+                                </select>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+    </aside>
+
+    <section id="portfolio" class="services bg-primary">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-10 col-lg-offset-1">
+                    <h2>Health</h2>
+                    <hr class="small">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-3">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-futbol-o fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Exercises in the past month</strong>
+                                </h4>
+                                <select id="exerany2" name="exerany2" style="color:black;">
+                                    <option value=1>Yes</option>
+                                    <option value=0>No</option>                        
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-3">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-ban fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Smoking</strong>
+                                </h4>
+                                <select id="_smoker3" name="_smoker3" width="100" style="width: 100px;color:black;">
+                                  <option value=1>Current smoker, now smokes everyday</option>
+                                  <option value=2>Current smoker, now smokes some days</option>
+                                  <option value=3>Former smoker</option>
+                                  <option value=4 selected="selected">Never smoked</option>
+                                </select>
+                            </div>
+                        </div> 
+                        
+                        <div class="col-md-4 col-sm-3">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-stethoscope fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Health care coverage</strong>
+                                </h4>
+                                <h7>
+                                    E.g. health insurance, prepaid plans, or government plans<br>
+                                </h7>
+                                <select id="hlthpln1" name="hlthpln1" style="color:black;">
+                                    <option value=1>Yes</option>
+                                    <option value=0>No</option>                        
+                                </select>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                    <div class="row">
+                        
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-3">
+                            <div class="service-item">
+                                <span class="fa-stack fa-4x">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-heartbeat fa-stack-1x text-primary"></i>
+                            </span>
+                                <h4>
+                                    <strong>Chronic Health Conditions</strong>
+                                </h4>
+                                <input type="checkbox" id="cvdinfr4" name="cvdinfr4" value=1> Heart attack&nbsp;&nbsp;
+                                <input type="checkbox" id="cvdcrhd4" name="cvdcrhd4" value=1> Angina or cornary heart disease&nbsp;&nbsp;
+                                <input type="checkbox" id="cvdstrk3" name="cvdstrk3" value=1> Stroke&nbsp;&nbsp;
+                                <input type="checkbox" id="asthma3" name="asthma3" value=1> Asthma&nbsp;&nbsp;
+                                <input type="checkbox" id="chcscncr" name="chcscncr" value=1> Skin cancer&nbsp;&nbsp;
+                                <input type="checkbox" id="chcocncr" name="chcocncr" value=1> Any other types of cancer<br>
+                                <input type="checkbox" id="chccopd1" name="chccopd1" value=1> COPD&nbsp;&nbsp;
+                                <input type="checkbox" id="havarth3" name="havarth3" value=1> Arthritis, rheumatoid arthritis, gout, lupus, or fibromyalgia&nbsp;&nbsp;
+                                <input type="checkbox" id="addepev2" name="addepev2" value=1> Depressive disorder&nbsp;&nbsp;
+                                <input type="checkbox" id="chckidny" name="chckidny" value=1> Kidney disease&nbsp;&nbsp;
+                                <input type="checkbox" id="diabete3" name="diabete3" value=1> Diabetes<br>
+                            </div>
+                        </div>   
+                    </div>
+
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    <!-- Portfolio Nativity-->
+    <section id="contact" class="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h2>Preferences</h2>
+                    <h4>How important do you think about these indicators for a neighborhood?</h4>
+                    <hr class="small">
+
+                    <div class="row">
+                      <!--<b>Income</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rincome" name="rincome" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                      
+                      <b>Median House Value</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rmhv" name="rmhv" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                  -->
+
+                      <h4>
+
+                      <b>Affordability</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="remploy" name="remploy" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                      
+                      <b>Health</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rhealth" name="rhealth" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Accessibility</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="raccess" name="raccess" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                      <hr class="small">
+
+                      </h4>
+                    <div>
+
+                    <h4>What types of places do you value in terms of accessibility?</h4>
+                    <hr class="small">
+
+                    <div class="row">
+                                            
+                      <b>Care for the Disabled</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rdisable" name="rdisable" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                      
+                      <b>Hospitals</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rhospital" name="rhospital" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                      
+                      <b>Doctors</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rdoctor" name="rdoctor" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Pharmacies</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rpharm" name="rpharm" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Community Centers</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rcomctr" name="rcomctr" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Bus Stations</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rbus" name="rbus" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Subway Stations</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rsubway" name="rsubway" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Restaurants</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rrestaurant" name="rrestaurant" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Grocery Stores</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rgrocery" name="rgrocery" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Natural Features</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rnature" name="rnature" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+
+                      <b>Parks</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rpark" name="rpark" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br><br>
+                       
+                      <b>Zoo</b>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="span2" value="5" data-slider-min="0" data-slider-max="10" data-slider-step="1" id="rzoo" name="rzoo" style="width:200px">&nbsp;&nbsp;&nbsp;&nbsp;<br>
+                                            
+                    </div>
+                    
+                    <!--<a href="#" class="btn btn-dark">View More Items</a>-->
+                </div>
+                <!-- /.col-lg-10 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+</div> <!--collapse-->
+</div> <!--collapse group-->
+
+    <!-- Call to Action -->
+    <aside class="call-to-action bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div style="text-align: center;">
+                        <div class="g-recaptcha" data-sitekey="6LfWlxYTAAAAAPVSaY0XVs5MIlRmT86aHePxTFnc" style="display: inline-block;"></div>
+                    </div>
+                    <div>
+                    <button type="submit" class="btn btn-default btn-lg">Find neighborhood!</button>
+                    </div>
+                    <div class="row">
+                        <a class="btn btn-dark btn-lg" id='tellusmore'>Tell Us More</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </aside>
+
+    </div> <!--div form group-->
+
+    </form>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-lg-offset-1 text-center">
+                    <h4><strong>NabeFinder</strong><br>
+                        Find Neighborhood for the Disabled
+                    </h4>
+                    <p>Developed by Hui Hu<br>Boston, MA</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="mailto:benhhu@gmail.com">benhhu@gmail.com</a></li>
+                        <li><i class="fa fa-home fa-fw"></i> <a href="http://www.hui-hu.com">www.hui-hu.com</a></li>
+                        <li><i class="fa fa-github fa-fw"></i> <a href="https://github.com/benhhu">GitHub</a></li>
+                        <li><i class="fa fa-linkedin fa-fw"></i> <a href="https://www.linkedin.com/in/benhhu">Linkedin</a></li>
+
+                        
+                    </ul>
+                    <br>
+                    <hr class="small">
+                    <p class="text-muted">Copyright &copy; NabeFinder.com 2016</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <!-- jQuery -->
+    <script src="../static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../static/js/bootstrap.min.js"></script>
+
+    <!-- Slider Javascript file -->
+    <script src="../../static/js/modernizr.js"></script>
+    <!--<script src="../../static/js/jquery.js"></script>-->
+    <script src="../../static/js/bootstrap-slider.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    //
+    $("#about-btn").click(function() {
+      $("#aboutModal").modal("show");
+      return false;
+    });
+
+
+    //slider
+    $('#remploy').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#raccess').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    /*$('#rincome').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rmhv').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+    */
+
+    $('#rhealth').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rpark').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rgrocery').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rhospital').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rdoctor').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rdisable').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rnature').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rbus').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rpharm').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rrestaurant').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rsubway').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rzoo').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    $('#rcomctr').slider({
+        formater: function(value) {
+            return 'Current value: '+value;
+        }
+    });
+
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    }); 
+
+
+    $("#tellusmore").on('click', function(e) {
+        e.preventDefault();
+        var $this = $(this);
+        var $collapse = $("#clg").find('.collapse');
+        $collapse.collapse('toggle');
+        if (document.getElementById("tellusmore").innerHTML !=="Show Less"){
+            document.getElementById("tellusmore").innerHTML="Show Less";
+        }
+        else {
+            document.getElementById("tellusmore").innerHTML="Tell Us More";
+        }
+    });   
+
+
+    </script>
+
+    <!--Google Analytics-->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-67460050-2', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+
+
+
+</body>
+
+</html>
